@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Stream this Mac's microphone to keel's ALSA loopback card so Claude Code voice mode
+# running on keel (inside the tmux hub session) can hear you. Leave it running in a
+# second tab; Ctrl-C to stop. First run: macOS asks to allow the terminal app to use the microphone.
+# Requires ffmpeg (brew install ffmpeg). Override the host with KEEL_HOST, the mic with KEEL_MIC.
+HOST="${KEEL_HOST:-nick@keel}"
+MIC="${KEEL_MIC:-MacBook Pro Microphone}"
+exec ffmpeg -hide_banner -loglevel error -f avfoundation -i ":${MIC}" \
+  -ac 1 -ar 16000 -f s16le - \
+  | ssh "$HOST" 'aplay -q -D plughw:Loopback,0,0 -f S16_LE -r 16000 -c 1'
