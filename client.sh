@@ -19,7 +19,7 @@ OS=$(uname -s); WSL=0
 if [ "$OS" = Linux ] && grep -qi microsoft /proc/version 2>/dev/null; then WSL=1; fi
 
 check(){
-  if out=$(ssh -F ~/.ssh/config -o BatchMode=yes -o ConnectTimeout=8 keel-cmd hostname 2>&1); then
+  if out=$(ssh -F ~/.ssh/config -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=accept-new keel-cmd hostname 2>&1); then
     say "connection OK: ssh keel-cmd reached '$out'"
   else
     warn "could not reach keel yet: $out"

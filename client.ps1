@@ -85,6 +85,8 @@ if (Get-Command wsl -ErrorAction SilentlyContinue) {
 }
 
 # 5. prove it
-$out = & ssh -o BatchMode=yes -o ConnectTimeout=8 keel-cmd hostname 2>&1
+# accept-new: trust keel's host key on first contact, refuse it if it ever changes. cmd /c keeps ssh's
+# stderr as plain text (Windows PowerShell otherwise turns it into a red NativeCommandError).
+$out = (cmd /c "ssh -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=accept-new keel-cmd hostname 2>&1" | Out-String).Trim()
 if ($LASTEXITCODE -eq 0) { Say "connection OK: ssh keel-cmd reached '$out'" }
 else { Warn "could not reach keel yet: $out"; Warn "sign in to Tailscale (approve this device if asked), then run: ssh keel-cmd hostname" }
