@@ -38,3 +38,21 @@ Server side lives in the private `keel` repo.
 
 ## keel-mic
 Streams the Mac microphone to keel so Claude Code voice mode works inside the remote tmux session. Run it in a second tab and leave it. Needs ffmpeg.
+
+## The wall: keel's command center on the screens
+`https://home.nickw.info/now` shows what needs you, the hub sessions, health, projects and the fleet at a glance
+(keel's docs/COMMAND_CENTER.md). Only Nick's own devices can open it (Tailscale on, or at home).
+
+**office-pc, the two portrait monitors** (the 65" is left alone). In PowerShell, once:
+
+    irm https://raw.githubusercontent.com/ConceptPending/keelkit/main/wall.ps1 -OutFile $env:TEMP\wall.ps1; powershell -ExecutionPolicy Bypass -File $env:TEMP\wall.ps1 -Install
+
+It opens an Edge window full screen on each portrait screen now and at every logon: the far-left one shows
+`?screen=left` (health, projects, fleet), the one beside the 65" shows `?screen=right` (needs you, sessions). A window on
+the wrong screen: click it, Win+Shift+Left/Right, then F11. To stop it opening at logon: run it with `-Uninstall`.
+
+**A MacBook, in its own Space:**
+1. Safari, open `https://home.nickw.info/now?screen=mac`.
+2. File > Add to Dock (name it "now"), then open the new "now" app from the Dock.
+3. Full screen: Ctrl-Cmd-F. macOS gives it its own Space; three-finger swipe or Ctrl-Left/Right to reach it.
+4. Optional: right-click its Dock icon > Options > Assign To > a desktop, so it always opens there.
